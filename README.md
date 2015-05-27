@@ -1,15 +1,13 @@
 # RealIp
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/real_ip`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Rack middleware to get client IP address on Heroku, extracted from our API service.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'real_ip'
+gem 'real_ip', github: 'quipper/real_ip'
 ```
 
 And then execute:
@@ -22,13 +20,28 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Mount `RealIp` rack middleware at the top of your Rack application's middleware stack.
 
-## Development
+Rack (config.ru)
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+```ruby
+require 'real_ip'
+use RealIp
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release` to create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Rails (config/application.rb or config/environments/*.rb)
+
+```ruby
+module MyApp
+  class Application < Rails::Application
+    config.middleware.insert 0, 'RealIp'
+  end
+end
+
+MyApp::Application.configure do
+  config.middleware.insert 0, 'RealIp'
+end
+```
 
 ## Contributing
 
