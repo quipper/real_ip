@@ -20,28 +20,30 @@ Or install it yourself as:
 
 ## Usage
 
-Mount `RealIp` rack middleware at the top of your Rack application's middleware stack.
+1. Mount `RealIp` rack middleware at the top of your Rack application's middleware stack.
 
-Rack (config.ru)
+  Rack (`config.ru`)
 
-```ruby
-require 'real_ip'
-use RealIp
-```
+  ```ruby
+  require 'real_ip'
+  use RealIp
+  ```
 
-Rails (config/application.rb or config/environments/*.rb)
+  Rails (`config/application.rb` or `config/environments/*.rb`)
 
-```ruby
-module MyApp
-  class Application < Rails::Application
+  ```ruby
+  module MyApp
+    class Application < Rails::Application
+      config.middleware.insert 0, 'RealIp'
+    end
+  end
+
+  MyApp::Application.configure do
     config.middleware.insert 0, 'RealIp'
   end
-end
+  ```
 
-MyApp::Application.configure do
-  config.middleware.insert 0, 'RealIp'
-end
-```
+2. On your controller, use `request.env['QUIPPER_REMOTE_ADDR']` to get the IP address
 
 ## Contributing
 
