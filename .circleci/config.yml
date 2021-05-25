@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  test:
+    parameters:
+      ruby-image:
+        type: string
+    docker:
+      - image: << parameters.ruby-image >>
+    working_directory: ~/real_ip
+    steps:
+      - checkout
+      - run: gem update bundler
+      - run: bundle config set --local path vendor/bundle
+      - run: bundle check || bundle install --jobs=4 --retry=3
+      - run: bundle exec rspec
+
+workflows:
+  all-tests:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              ruby-image:
+                - circleci/ruby:2.6.7-browsers
+                - circleci/ruby:2.7.3-browsers
+                - circleci/ruby:latest-browsers
